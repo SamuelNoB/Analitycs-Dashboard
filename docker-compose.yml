@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: backend
+    build: 
+      context: ./back
+    command: yarn start
+    ports:
+      - '3001:3001'  # Mapeamento de porta para o backend
+    networks:
+      - dashboard
+
+  frontend:
+    container_name: frontend
+    build: 
+      context: ./front  # Caminho para o Dockerfile do frontend
+    command: yarn start
+    ports:
+      - '3000:3000'  # Mapeamento de porta para o frontend
+    depends_on:
+      - backend  # Dependência do serviço backend
+    networks:
+      - dashboard
+
+
+networks:
+  dashboard:
+    driver: 'bridge'

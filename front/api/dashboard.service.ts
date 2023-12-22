@@ -11,7 +11,7 @@ export interface AnalyticsService {
 	get: () => Promise<Analytics[]>;
 }
 
-const url = 'http://localhost:3000';
+const url = 'http://localhost:3001';
 export const AnalyticsServiceImpl: AnalyticsService = {
 	async get(): Promise<Analytics[]> {
 		const res = await fetch(url + '/analytics?days=30&links=12', {

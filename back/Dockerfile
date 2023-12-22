@@ -3,6 +3,8 @@ FROM node:alpine
 
 # Crie e defina o diretório de trabalho dentro do contêiner
 WORKDIR /usr/src/app
+# Instale o Yarn
+RUN apk add --no-cache yarn
 
 # Copie os arquivos de configuração da aplicação
 COPY package*.json  yarn.lock ./
@@ -14,7 +16,7 @@ RUN yarn
 COPY . .
 
 # Exponha a porta em que a aplicação irá rodar
-EXPOSE 3000
+EXPOSE 3001
 
 # Comando para iniciar a aplicação
 CMD ["yarn", "start"]
