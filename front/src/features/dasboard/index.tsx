@@ -1,5 +1,5 @@
 'use client';
-import { Box, GridItem, SimpleGrid } from '@chakra-ui/react';
+import { GridItem, SimpleGrid } from '@chakra-ui/react';
 import { Analytics } from '../../../api/dashboard.service';
 import { BaseCard } from './components/BaseCard';
 import { DailyAccessGraph } from './components/DailyAccess';
@@ -21,7 +21,7 @@ export function Dashboard({
 			</GridItem>
 			<GridItem colSpan={[12, 4]}>
 				<BaseCard loading={loading} title='Links mais acessados na semana'>
-					<MostAccessedLinksTable />
+					<MostAccessedLinksTable data={data} />
 				</BaseCard>
 			</GridItem>
 		</SimpleGrid>
