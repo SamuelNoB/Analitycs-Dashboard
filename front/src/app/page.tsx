@@ -1,7 +1,7 @@
 'use client';
 import { Dashboard } from '@/features/dasboard';
 import { useQuery } from 'react-query';
-import { AnalyticsServiceImpl } from '../../api/dashboard.service';
+import { AnalyticsServiceImpl } from '../api/dashboard.service';
 import { useState } from 'react';
 
 export default function Home() {

@@ -1,4 +1,4 @@
-import { DayAnalytics } from '../../../../../../api/dashboard.service';
+import { DayAnalytics } from '../../../../../api/dashboard.service';
 import { subDays, format } from 'date-fns';
 
 type dataIn = { [x: string]: Pick<DayAnalytics, 'clicked-links'> }[];

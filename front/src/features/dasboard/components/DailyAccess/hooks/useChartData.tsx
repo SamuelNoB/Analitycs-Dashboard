@@ -1,7 +1,7 @@
 import ptbr from 'apexcharts/dist/locales/pt-br.json';
 import { ApexOptions } from 'apexcharts';
 import { useColorMode, useColorModeValue } from '@chakra-ui/react';
-import { DayAnalytics } from '../../../../../../api/dashboard.service';
+import { DayAnalytics } from '../../../../../api/dashboard.service';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatBrazilianNumber } from '@/functions/numbers/formatBrazilianNumber';
 

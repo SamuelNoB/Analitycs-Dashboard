@@ -1,6 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { Analytics } from '../../../../../api/dashboard.service';
+import { Analytics } from '../../../../api/dashboard.service';
 import { useChartData } from './hooks/useChartData';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });

@@ -9,7 +9,7 @@ import {
 	TableContainer,
 	Text
 } from '@chakra-ui/react';
-import { Analytics } from '../../../../../api/dashboard.service';
+import { Analytics } from '../../../../api/dashboard.service';
 import { getLastWeekMostAccessedLinks } from './functions/getLastWeekMostAccessedLinks';
 import { formatBrazilianNumber } from '@/functions/numbers/formatBrazilianNumber';
 export function MostAccessedLinksTable({ data }: { data: Analytics[] }) {

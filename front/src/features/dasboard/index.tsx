@@ -1,6 +1,6 @@
 'use client';
 import { GridItem, SimpleGrid } from '@chakra-ui/react';
-import { Analytics } from '../../../api/dashboard.service';
+import { Analytics } from '../../api/dashboard.service';
 import { BaseCard } from './components/BaseCard';
 import { DailyAccessGraph } from './components/DailyAccess';
 import { MostAccessedLinksTable } from './components/MostAccessed';
