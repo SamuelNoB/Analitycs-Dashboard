@@ -3,6 +3,7 @@ import { ApexOptions } from 'apexcharts';
 import { useColorMode, useColorModeValue } from '@chakra-ui/react';
 import { DayAnalytics } from '../../../../../../api/dashboard.service';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { formatBrazilianNumber } from '@/functions/numbers/formatBrazilianNumber';
 
 function getUniqueValuesInArray(array: string[]): string[] {
 	const uniqueValues = new Set(array);
@@ -22,7 +23,7 @@ export function useChartData(dailyAccessData: dataIn) {
 	const days = dailyAccessData?.map(data => Object.keys(data)[0]) ?? [];
 	const { colorMode } = useColorMode();
 	const color = useColorModeValue('gray.50', 'gray.900');
-	const options = {
+	const options: ApexOptions = {
 		theme: {
 			mode: colorMode === 'dark' ? 'dark' : 'light'
 		},
@@ -52,6 +53,11 @@ export function useChartData(dailyAccessData: dataIn) {
 		tooltip: {
 			x: {
 				format: 'dd/MMM/yy'
+			},
+			y: {
+				formatter: function (value) {
+					return formatBrazilianNumber(value, false, 0);
+				}
 			}
 		},
 		fill: {
@@ -67,7 +73,10 @@ export function useChartData(dailyAccessData: dataIn) {
 		yaxis: {
 			title: { text: 'Acessos' },
 			labels: {
-				show: true
+				show: true,
+				formatter(val, opts) {
+					return formatBrazilianNumber(val, false, 0);
+				}
 			}
 		}
 	};
