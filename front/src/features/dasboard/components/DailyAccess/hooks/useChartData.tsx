@@ -1,18 +1,16 @@
-import dynamic from 'next/dynamic';
 import ptbr from 'apexcharts/dist/locales/pt-br.json';
 import { ApexOptions } from 'apexcharts';
 import { useColorMode, useColorModeValue } from '@chakra-ui/react';
-import { Analytics, DayAnalytics } from '../../../../api/dashboard.service';
+import { DayAnalytics } from '../../../../../../api/dashboard.service';
 import { useCallback, useEffect, useState } from 'react';
-const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 function getUniqueValuesInArray(array: string[]): string[] {
 	const uniqueValues = new Set(array);
 	return Array.from(uniqueValues);
 }
-
 type dataIn = { [x: string]: Pick<DayAnalytics, 'page-views'> }[];
-function useChartData(dailyAccessData: dataIn) {
+
+export function useChartData(dailyAccessData: dataIn) {
 	const [series, setSeries] = useState<
 		ApexAxisChartSeries | ApexNonAxisChartSeries
 	>([
@@ -115,15 +113,4 @@ function useChartData(dailyAccessData: dataIn) {
 	}, [dailyAccessData, parseToChartData]);
 
 	return { options, series };
-}
-
-export function DailyAccessGraph({ data }: { data: Analytics[] }) {
-	console.log(data);
-
-	const { options, series } = useChartData(data);
-	return (
-		<>
-			<Chart options={options} series={series} />
-		</>
-	);
 }
