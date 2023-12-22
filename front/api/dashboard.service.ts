@@ -12,9 +12,11 @@ export interface AnalyticsService {
 }
 
 const url = 'http://localhost:3000';
-export class AnalyticsServiceImpl implements AnalyticsService {
+export const AnalyticsServiceImpl: AnalyticsService = {
 	async get(): Promise<Analytics[]> {
-		const res = await fetch(url + '/analytics', { method: 'GET' });
+		const res = await fetch(url + '/analytics?days=30&links=12', {
+			method: 'GET'
+		});
 		return await res.json();
 	}
-}
+};

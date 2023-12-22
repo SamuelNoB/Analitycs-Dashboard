@@ -33,7 +33,7 @@ export function BaseCard({
 	return (
 		<Card
 			bg='gray.50'
-			_dark={{ bg: 'gray.800' }}
+			_dark={{ bg: 'gray.700' }}
 			rounded='md'
 			shadow='md'
 			h='full'

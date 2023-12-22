@@ -1,13 +1,13 @@
+'use client';
 import {
 	Table,
 	Thead,
 	Tbody,
-	Tfoot,
 	Tr,
 	Th,
 	Td,
-	TableCaption,
-	TableContainer
+	TableContainer,
+	Text
 } from '@chakra-ui/react';
 import { Analytics } from '../../../../../api/dashboard.service';
 import { getLastWeekMostAccessedLinks } from './functions/getLastWeekMostAccessedLinks';
@@ -16,7 +16,7 @@ export function MostAccessedLinksTable({ data }: { data: Analytics[] }) {
 
 	return (
 		<TableContainer>
-			<Table variant='striped'>
+			<Table colorScheme='gray.500' variant='striped'>
 				<Thead>
 					<Tr>
 						<Th>Links</Th>
@@ -24,14 +24,14 @@ export function MostAccessedLinksTable({ data }: { data: Analytics[] }) {
 					</Tr>
 				</Thead>
 				<Tbody>
-					{Object.keys(result).map(aKey => {
+					{result.map(aLink => {
 						return (
-							<>
-								<Tr>
-									<Td>{aKey}</Td>
-									<Td isNumeric>{result[aKey]}</Td>
-								</Tr>
-							</>
+							<Tr _dark={{ _odd: { bgColor: 'gray.600' } }} key={aLink.link}>
+								<Td>
+									<Text fontWeight={'bold'}>{aLink.link}</Text>
+								</Td>
+								<Td isNumeric>{aLink.clicks}</Td>
+							</Tr>
 						);
 					})}
 				</Tbody>

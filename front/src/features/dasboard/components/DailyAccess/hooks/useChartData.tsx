@@ -2,7 +2,7 @@ import ptbr from 'apexcharts/dist/locales/pt-br.json';
 import { ApexOptions } from 'apexcharts';
 import { useColorMode, useColorModeValue } from '@chakra-ui/react';
 import { DayAnalytics } from '../../../../../../api/dashboard.service';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 function getUniqueValuesInArray(array: string[]): string[] {
 	const uniqueValues = new Set(array);
@@ -16,19 +16,17 @@ export function useChartData(dailyAccessData: dataIn) {
 	>([
 		{
 			name: 'Total de acessos',
-			data: []
+			data: Array.from(Array(dailyAccessData.length).keys())
 		}
 	]);
-
+	const days = dailyAccessData?.map(data => Object.keys(data)[0]) ?? [];
 	const { colorMode } = useColorMode();
 	const color = useColorModeValue('gray.50', 'gray.900');
-	const days = dailyAccessData?.map(data => Object.keys(data)[0]) ?? [];
-
-	const options: ApexOptions = {
+	const options = {
 		theme: {
 			mode: colorMode === 'dark' ? 'dark' : 'light'
 		},
-		labels: getUniqueValuesInArray(days),
+		labels: getUniqueValuesInArray(days) ?? [''],
 		legend: {
 			position: 'top'
 		},
@@ -71,24 +69,9 @@ export function useChartData(dailyAccessData: dataIn) {
 			labels: {
 				show: true
 			}
-		},
-		dataLabels: {
-			enabled: false
-		},
-		responsive: [
-			{
-				breakpoint: 480,
-				options: {
-					chart: {
-						width: 200
-					},
-					legend: {
-						position: 'bottom'
-					}
-				}
-			}
-		]
+		}
 	};
+
 	const parseToChartData = useCallback(
 		(access: dataIn): ApexAxisChartSeries => {
 			const data = access.map(aDailyAccess => {
@@ -108,8 +91,10 @@ export function useChartData(dailyAccessData: dataIn) {
 	);
 
 	useEffect(() => {
-		const result = parseToChartData(dailyAccessData);
-		setSeries(result);
+		if (dailyAccessData) {
+			const result = parseToChartData(dailyAccessData);
+			setSeries(result);
+		}
 	}, [dailyAccessData, parseToChartData]);
 
 	return { options, series };

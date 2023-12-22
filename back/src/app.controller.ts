@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -10,7 +10,7 @@ export class AppController {
     return this.appService.getHello();
   }
   @Get('/analytics')
-  getAnalytics() {
-    return this.appService.getAnalytics();
+  getAnalytics(@Query('days') days?: number, @Query('links') links?: number) {
+    return this.appService.getAnalytics(days, links);
   }
 }

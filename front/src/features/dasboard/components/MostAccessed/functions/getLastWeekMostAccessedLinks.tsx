@@ -2,7 +2,7 @@ import { DayAnalytics } from '../../../../../../api/dashboard.service';
 import { subDays, format } from 'date-fns';
 
 type dataIn = { [x: string]: Pick<DayAnalytics, 'clicked-links'> }[];
-type mostAccessedLinks = { [x: string]: number };
+type mostAccessedLinks = { link: string; clicks: number };
 function lastWeekDate() {
 	const today = new Date();
 	const sevenDaysAgo = subDays(today, 7);
@@ -16,10 +16,48 @@ function filterlastSevenDaysDates(analyticsData: dataIn) {
 	const allDates = analyticsData?.map(aData => Object.keys(aData)[0]) ?? [];
 	return allDates.filter(aDate => aDate > formatedSevenDaysAgo);
 }
+function compare(a: mostAccessedLinks, b: mostAccessedLinks) {
+	if (a.clicks < b.clicks) {
+		return -1;
+	}
+	if (a.clicks > b.clicks) {
+		return 1;
+	}
+	return 0;
+}
+
+function compareObjects<dataType>(
+	key: keyof dataType,
+	order: 'asc' | 'desc' = 'asc'
+) {
+	if (order === 'asc') {
+		const compareAsc = (a: dataType, b: dataType) => {
+			if (a[key] < b[key]) {
+				return -1;
+			}
+			if (a[key] > b[key]) {
+				return 1;
+			}
+			return 0;
+		};
+		return compareAsc;
+	}
+
+	const compareDesc = (a: dataType, b: dataType) => {
+		if (a[key] < b[key]) {
+			return 1;
+		}
+		if (a[key] > b[key]) {
+			return -1;
+		}
+		return 0;
+	};
+	return compareDesc;
+}
 
 export function getLastWeekMostAccessedLinks(analyticsData: dataIn) {
 	const lastSevenDaysDates = filterlastSevenDaysDates(analyticsData);
-	const result: mostAccessedLinks = {};
+	const result: mostAccessedLinks[] = [];
 	for (const aDay of lastSevenDaysDates) {
 		const dateStats = analyticsData.find(aData =>
 			Object.keys(aData).includes(aDay)
@@ -27,14 +65,15 @@ export function getLastWeekMostAccessedLinks(analyticsData: dataIn) {
 		if (dateStats) {
 			const clickedLinks = Object.keys(dateStats[aDay]['clicked-links']);
 			clickedLinks.forEach(link => {
-				if (link in result) {
-					result[link] = result[link] + dateStats[aDay]['clicked-links'][link];
+				const foundLink = result.find(aLink => aLink.link === link);
+				if (foundLink) {
+					foundLink.clicks += dateStats[aDay]['clicked-links'][link];
 					return;
 				}
-				result[link] = dateStats[aDay]['clicked-links'][link];
+				result.push({ link, clicks: dateStats[aDay]['clicked-links'][link] });
 			});
 		}
 	}
 
-	return result;
+	return result.sort(compareObjects<mostAccessedLinks>('clicks', 'desc'));
 }
